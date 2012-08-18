@@ -8,9 +8,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
- * @todo JavaDoc this class
+ * Bukkit plugin for adding custom recipes.
  */
 public class ReasonableRecipes extends JavaPlugin {
     private List<Recipe> customRecipes;
@@ -28,13 +29,17 @@ public class ReasonableRecipes extends JavaPlugin {
         customRecipes = new ArrayList<Recipe>();
 
         for (String recipeDefinition : getConfig().getStringList("shapeless-recipes")) {
-            Material result = Material.getMaterial(getResultFromRecipeDefinition(recipeDefinition));
-            ShapelessRecipe recipe = new ShapelessRecipe(new ItemStack(result.getId()));
-            for (String input : getInputsFromRecipeDefinition(recipeDefinition)) {
-                recipe.addIngredient(1, Material.getMaterial(input), -1);
+            try {
+                Material result = Material.getMaterial(getResultFromRecipeDefinition(recipeDefinition));
+                ShapelessRecipe recipe = new ShapelessRecipe(new ItemStack(result.getId()));
+                for (String input : getInputsFromRecipeDefinition(recipeDefinition)) {
+                    recipe.addIngredient(1, Material.getMaterial(input), -1);
+                }
+                customRecipes.add(recipe);
+                getLogger().info("Initialized shapeless recipe '" + recipeDefinition + "'");
+            } catch (Exception e) {
+                getLogger().log(Level.SEVERE, "Failed to initialize recipe '" + recipeDefinition + "'", e);
             }
-            customRecipes.add(recipe);
-            getLogger().info("Initialized shapeless recipe '" + recipeDefinition + "'");
         }
     }
 
