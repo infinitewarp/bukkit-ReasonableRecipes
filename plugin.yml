@@ -1,0 +1,8 @@
+name: ReasonableRecipes
+version: 1.0.0
+description: Add reasonable recipes for repairing tools and armors or anything else.
+author: BradSmith
+website: http://infinitewarp.com/minecraft/
+
+main: com.infinitewarp.reasonablerecipes.ReasonableRecipes
+database: false
